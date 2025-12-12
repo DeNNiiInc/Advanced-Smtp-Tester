@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Advanced SMTP Tester - Test your SMTP configurations securely and easily."
+    />
+    <title>Advanced SMTP Tester</title>
+    <link rel="icon" type="image/png" href="Logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="background-animation"></div>
+
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1 class="title">
+            <img src="Logo.png" alt="Logo" class="title-icon" />
+            SMTP Tester
+          </h1>
+          <p class="subtitle">
+            Advanced SMTP Configuration & Delivery Testing Utility
+          </p>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="main-content">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-icon">📧</div>
+            <h2 class="panel-title">Server Configuration</h2>
+          </div>
+
+          <form id="smtpForm" class="smtp-form">
+            <div class="form-grid">
+              <!-- Server Details -->
+              <div class="form-group">
+                <label for="host">SMTP Host</label>
+                <input
+                  type="text"
+                  id="host"
+                  name="host"
+                  placeholder="smtp.example.com"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="port">Port</label>
+                <input
+                  type="number"
+                  id="port"
+                  name="port"
+                  placeholder="587"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="secure">Encryption</label>
+                <select id="secure" name="secure">
+                  <option value="false">STARTTLS (587/25)</option>
+                  <option value="true">SSL/TLS (465)</option>
+                </select>
+              </div>
+
+              <!-- Auth Details -->
+              <div class="form-group">
+                <label for="user">Username / Email</label>
+                <input
+                  type="text"
+                  id="user"
+                  name="user"
+                  placeholder="user@example.com"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="pass">Password</label>
+                <div class="password-input-wrapper">
+                  <input
+                    type="password"
+                    id="pass"
+                    name="pass"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="toggle-password"
+                    onclick="togglePassword()"
+                  >
+                    👁️
+                  </button>
+                </div>
+              </div>
+
+              <!-- Email Details -->
+              <div class="form-group">
+                <label for="from">From Address (Optional)</label>
+                <input
+                  type="email"
+                  id="from"
+                  name="from"
+                  placeholder="Defaults to Username"
+                />
+              </div>
+              <div class="form-group">
+                <label for="to">To Address</label>
+                <input
+                  type="email"
+                  id="to"
+                  name="to"
+                  placeholder="recipient@example.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="testBtn">
+                <span class="btn-text">Test Configuration & Send Email</span>
+                <div class="loading-spinner hidden"></div>
+              </button>
+            </div>
+
+            <!-- Warning for Password Transmission -->
+            <div class="alert alert-warning">
+              <span class="alert-icon">⚠️</span>
+              <p>
+                <strong>Note:</strong> Per your request, the password used for
+                this test will be included in the body of the test email.
+              </p>
+            </div>
+          </form>
+
+          <!-- Results Section -->
+          <div id="results" class="results-section hidden">
+            <h3>Test Results</h3>
+            <div id="statusMessage" class="status-message"></div>
+            <pre id="logOutput" class="log-output"></pre>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>&copy; 2025 Beyond Cloud Technology. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
