@@ -9,9 +9,16 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
 
-app.post("/api/test-smtp", async (req, res) => {
+// Serve static files from the "public" directory under the "/public" path
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// Serve index.html from the root directory
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.post('/api/test-smtp', async (req, res) => {
   const { host, port, secure, user, pass, from, to } = req.body;
 
   // Log intent
