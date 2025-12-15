@@ -8,6 +8,7 @@
     "electron": "electron .",
     "build": "electron-builder build --win --publish never",
     "build:dir": "electron-builder build --win --dir",
+    "package": "electron-packager . \"Advanced-SMTP-Tester\" --platform=win32 --arch=x64 --out=dist --overwrite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

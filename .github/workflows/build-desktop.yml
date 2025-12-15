@@ -27,10 +27,13 @@ jobs:
         run: npm ci
       
       - name: Build with electron-packager
-        run: npx electron-packager . "Advanced-SMTP-Tester" --platform=win32 --arch=x64 --out=dist --overwrite
+        run: npm run package
       
+      - name: Verfiy Build
+        run: ls dist
+
       - name: Create ZIP archive
-        run: Compress-Archive -Path "dist\Advanced-SMTP-Tester-win32-x64" -DestinationPath "Advanced-SMTP-Tester-Windows.zip"
+        run: Compress-Archive -Path "dist\*-win32-x64" -DestinationPath "Advanced-SMTP-Tester-Windows.zip"
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
