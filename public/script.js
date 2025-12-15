@@ -4,7 +4,7 @@ function togglePassword() {
     passInput.setAttribute('type', type);
 }
 
-document.getElementById('smtpForm').addEventListener('submit', async function(e) {
+document.getElementById('smtpForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const btn = document.getElementById('testBtn');
@@ -19,7 +19,7 @@ document.getElementById('smtpForm').addEventListener('submit', async function(e)
     statusDiv.className = 'status-message';
     statusDiv.textContent = '';
     logOutput.textContent = '';
-    
+
     // Set Loading State
     btn.disabled = true;
     spinner.classList.remove('hidden');
@@ -37,6 +37,17 @@ document.getElementById('smtpForm').addEventListener('submit', async function(e)
             },
             body: JSON.stringify(data),
         });
+        if (!response.ok) {
+            // Handle non-200 responses
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                const errorResult = await response.json();
+                throw new Error(errorResult.message || errorResult.error || "Server Error");
+            } else {
+                const text = await response.text();
+                throw new Error(`Server returned ${response.status}: ${text.substring(0, 100)}...`);
+            }
+        }
 
         const result = await response.json();
 
@@ -48,6 +59,7 @@ document.getElementById('smtpForm').addEventListener('submit', async function(e)
             statusDiv.textContent = '✅ Success! Email Sent Successfully.';
             logOutput.textContent = JSON.stringify(result.details, null, 2);
         } else {
+            // This block handles cases where response was 200 OK but success is false (business logic error)
             statusDiv.classList.add('status-error');
             statusDiv.textContent = '❌ Error: ' + result.message;
             logOutput.textContent = result.error || 'Unknown error occurred.';
@@ -56,8 +68,8 @@ document.getElementById('smtpForm').addEventListener('submit', async function(e)
     } catch (error) {
         resultsDiv.classList.remove('hidden');
         statusDiv.classList.add('status-error');
-        statusDiv.textContent = '❌ Network Error';
-        logOutput.textContent = error.toString();
+        statusDiv.textContent = '❌ Error Caught'; // Changed from "Network Error" to be more accurate
+        logOutput.textContent = error.message; // Use error.message instead of error.toString()
     } finally {
         // Reset Button
         btn.disabled = false;
@@ -67,7 +79,7 @@ document.getElementById('smtpForm').addEventListener('submit', async function(e)
 });
 
 // Auto Discovery Test Handler
-document.getElementById('autoTestBtn').addEventListener('click', async function() {
+document.getElementById('autoTestBtn').addEventListener('click', async function () {
     const btn = document.getElementById('autoTestBtn');
     const spinner = btn.querySelector('.loading-spinner');
     const btnText = btn.querySelector('.btn-text');
@@ -94,7 +106,7 @@ document.getElementById('autoTestBtn').addEventListener('click', async function(
     statusDiv.className = 'status-message';
     statusDiv.textContent = '';
     logOutput.textContent = '';
-    
+
     // Set Loading State
     btn.disabled = true;
     spinner.classList.remove('hidden');
@@ -108,6 +120,16 @@ document.getElementById('autoTestBtn').addEventListener('click', async function(
             },
             body: JSON.stringify(autoTestData),
         });
+        if (!response.ok) {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                const errorResult = await response.json();
+                throw new Error(errorResult.message || errorResult.error || "Server Error");
+            } else {
+                const text = await response.text();
+                throw new Error(`Server returned ${response.status}: ${text.substring(0, 100)}...`);
+            }
+        }
 
         const result = await response.json();
 
@@ -117,28 +139,28 @@ document.getElementById('autoTestBtn').addEventListener('click', async function(
         if (result.success) {
             statusDiv.classList.add('status-success');
             statusDiv.textContent = `✅ ${result.message}`;
-            
+
             // Format detailed results
             let detailedOutput = `Total Tests: ${result.totalTests}\n`;
             detailedOutput += `Successful: ${result.successfulConfigs}\n`;
             detailedOutput += `Failed: ${result.totalTests - result.successfulConfigs}\n\n`;
             detailedOutput += '─'.repeat(50) + '\n\n';
-            
+
             result.results.forEach((test, index) => {
                 detailedOutput += `Test ${index + 1}: ${test.config}\n`;
                 detailedOutput += `  Port: ${test.port}\n`;
                 detailedOutput += `  Encryption: ${test.secure ? 'SSL/TLS' : 'STARTTLS'}\n`;
                 detailedOutput += `  Status: ${test.status === 'success' ? '✅ SUCCESS' : '❌ FAILED'}\n`;
-                
+
                 if (test.status === 'success') {
                     detailedOutput += `  Email Sent: ${test.messageId}\n`;
                 } else {
                     detailedOutput += `  Error: ${test.error}\n`;
                 }
-                
+
                 detailedOutput += '\n';
             });
-            
+
             logOutput.textContent = detailedOutput;
         } else {
             statusDiv.classList.add('status-error');
@@ -149,8 +171,8 @@ document.getElementById('autoTestBtn').addEventListener('click', async function(
     } catch (error) {
         resultsDiv.classList.remove('hidden');
         statusDiv.classList.add('status-error');
-        statusDiv.textContent = '❌ Network Error';
-        logOutput.textContent = error.toString();
+        statusDiv.textContent = '❌ Error Caught';
+        logOutput.textContent = error.message;
     } finally {
         // Reset Button
         btn.disabled = false;

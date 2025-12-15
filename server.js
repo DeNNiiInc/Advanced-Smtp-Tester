@@ -19,46 +19,45 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/test-smtp', async (req, res) => {
-  const { host, port, secure, user, pass, from, to } = req.body;
+    const { host, port, secure, user, pass, from, to } = req.body;
 
-  // Log intent
-  console.log(
-    `Attempting SMTP connection to ${host}:${port} (${
-      secure ? "Secure" : "Insecure"
-    }) for ${user}`
-  );
+    // Log intent
+    console.log(
+        `Attempting SMTP connection to ${host}:${port} (${secure ? "Secure" : "Insecure"
+        }) for ${user}`
+    );
 
-  // Create Transporter
-  const transporterConfig = {
-    host: host,
-    port: parseInt(port),
-    secure: secure === true || secure === "true", // true for 465, false for other ports
-    auth: {
-      user: user,
-      pass: pass,
-    },
-  };
-
-  // Only add TLS settings if secure is not explicitly "none"
-  if (secure !== "none") {
-    transporterConfig.tls = {
-      rejectUnauthorized: false, // Allow self-signed certs for testing flexibility
+    // Create Transporter
+    const transporterConfig = {
+        host: host,
+        port: parseInt(port),
+        secure: secure === true || secure === "true", // true for 465, false for other ports
+        auth: {
+            user: user,
+            pass: pass,
+        },
     };
-  }
 
-  const transporter = nodemailer.createTransport(transporterConfig);
+    // Only add TLS settings if secure is not explicitly "none"
+    if (secure !== "none") {
+        transporterConfig.tls = {
+            rejectUnauthorized: false, // Allow self-signed certs for testing flexibility
+        };
+    }
 
-  try {
-    // 1. Verify Connection
-    await transporter.verify();
-    console.log("SMTP Connection Verified Successfully");
+    try {
+        const transporter = nodemailer.createTransport(transporterConfig);
 
-    // 2. Send Test Email
-    const mailOptions = {
-      from: from || user, // Default to user if from not specified
-      to: to,
-      subject: "SMTP Test - Advanced SMTP Tester",
-      html: `
+        // 1. Verify Connection
+        await transporter.verify();
+        console.log("SMTP Connection Verified Successfully");
+
+        // 2. Send Test Email
+        const mailOptions = {
+            from: from || user, // Default to user if from not specified
+            to: to,
+            subject: "SMTP Test - Advanced SMTP Tester",
+            html: `
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -182,85 +181,85 @@ app.post('/api/test-smtp', async (req, res) => {
                 </body>
                 </html>
             `,
-    };
+        };
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Message sent: %s", info.messageId);
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Message sent: %s", info.messageId);
 
-    res.json({
-      success: true,
-      message: "Connection verified and email sent successfully!",
-      details: {
-        messageId: info.messageId,
-        response: info.response,
-      },
-    });
-  } catch (error) {
-    console.error("SMTP Error:", error);
-    res.status(500).json({
-      success: false,
-      message: "SMTP Test Failed",
-      error: error.message,
-    });
-  }
+        res.json({
+            success: true,
+            message: "Connection verified and email sent successfully!",
+            details: {
+                messageId: info.messageId,
+                response: info.response,
+            },
+        });
+    } catch (error) {
+        console.error("SMTP Error:", error);
+        res.status(500).json({
+            success: false,
+            message: "SMTP Test Failed",
+            error: error.message,
+        });
+    }
 });
 
 // Auto-Discovery Endpoint - Tests multiple port/encryption combinations
 app.post('/api/auto-test-smtp', async (req, res) => {
-  const { host, user, pass, from, to } = req.body;
+    const { host, user, pass, from, to } = req.body;
 
-  // Common SMTP port/encryption combinations to test
-  const configurations = [
-    { port: 587, secure: false, name: 'STARTTLS (587)', tls: true },
-    { port: 465, secure: true, name: 'SSL/TLS (465)', tls: true },
-    { port: 25, secure: false, name: 'STARTTLS (25)', tls: true },
-    { port: 2525, secure: false, name: 'STARTTLS (2525)', tls: true },
-    { port: 25, secure: false, name: 'Unencrypted (25)', tls: false },
-    { port: 587, secure: false, name: 'Unencrypted (587)', tls: false },
-    { port: 2525, secure: false, name: 'Unencrypted (2525)', tls: false },
-  ];
+    // Common SMTP port/encryption combinations to test
+    const configurations = [
+        { port: 587, secure: false, name: 'STARTTLS (587)', tls: true },
+        { port: 465, secure: true, name: 'SSL/TLS (465)', tls: true },
+        { port: 25, secure: false, name: 'STARTTLS (25)', tls: true },
+        { port: 2525, secure: false, name: 'STARTTLS (2525)', tls: true },
+        { port: 25, secure: false, name: 'Unencrypted (25)', tls: false },
+        { port: 587, secure: false, name: 'Unencrypted (587)', tls: false },
+        { port: 2525, secure: false, name: 'Unencrypted (2525)', tls: false },
+    ];
 
-  console.log(`Starting auto-discovery for ${host} with user ${user}`);
-  
-  const results = [];
-  let successCount = 0;
+    console.log(`Starting auto-discovery for ${host} with user ${user}`);
 
-  // Test each configuration
-  for (const config of configurations) {
-    console.log(`Testing ${config.name}...`);
-    
-    const transporterConfig = {
-      host: host,
-      port: config.port,
-      secure: config.secure,
-      auth: {
-        user: user,
-        pass: pass,
-      },
-      connectionTimeout: 10000, // 10 second timeout
-      greetingTimeout: 10000,
-    };
+    const results = [];
+    let successCount = 0;
 
-    // Only add TLS settings if encryption is enabled
-    if (config.tls !== false) {
-      transporterConfig.tls = {
-        rejectUnauthorized: false,
-      };
-    }
+    // Test each configuration
+    for (const config of configurations) {
+        console.log(`Testing ${config.name}...`);
 
-    const transporter = nodemailer.createTransport(transporterConfig);
+        const transporterConfig = {
+            host: host,
+            port: config.port,
+            secure: config.secure,
+            auth: {
+                user: user,
+                pass: pass,
+            },
+            connectionTimeout: 10000, // 10 second timeout
+            greetingTimeout: 10000,
+        };
 
-    try {
-      // Verify connection
-      await transporter.verify();
-      console.log(`✅ ${config.name} - Connection successful!`);
+        // Only add TLS settings if encryption is enabled
+        if (config.tls !== false) {
+            transporterConfig.tls = {
+                rejectUnauthorized: false,
+            };
+        }
 
-      // Send test email for this successful configuration
-      const mailOptions = {
-        from: from || user,
-        to: to,
-        subject: `SMTP Auto-Discovery: ${config.name} - SUCCESS`,
-        html: `
+        try {
+            const transporter = nodemailer.createTransport(transporterConfig);
+
+            // Verify connection
+            await transporter.verify();
+            console.log(`✅ ${config.name} - Connection successful!`);
+
+            // Send test email for this successful configuration
+            const mailOptions = {
+                from: from || user,
+                to: to,
+                subject: `SMTP Auto-Discovery: ${config.name} - SUCCESS`,
+                html: `
                 <!DOCTYPE html>
                 <html>
                 <head>
@@ -384,42 +383,52 @@ app.post('/api/auto-test-smtp', async (req, res) => {
                 </body>
                 </html>
             `,
-      };
+            };
 
-      const info = await transporter.sendMail(mailOptions);
-      successCount++;
+            const info = await transporter.sendMail(mailOptions);
+            successCount++;
 
-      results.push({
-        config: config.name,
-        port: config.port,
-        secure: config.secure,
-        status: 'success',
-        messageId: info.messageId,
-      });
+            results.push({
+                config: config.name,
+                port: config.port,
+                secure: config.secure,
+                status: 'success',
+                messageId: info.messageId,
+            });
 
-      console.log(`📧 Email sent for ${config.name}: ${info.messageId}`);
-    } catch (error) {
-      console.log(`❌ ${config.name} - Failed: ${error.message}`);
-      results.push({
-        config: config.name,
-        port: config.port,
-        secure: config.secure,
-        status: 'failed',
-        error: error.message,
-      });
+            console.log(`📧 Email sent for ${config.name}: ${info.messageId}`);
+        } catch (error) {
+            console.log(`❌ ${config.name} - Failed: ${error.message}`);
+            results.push({
+                config: config.name,
+                port: config.port,
+                secure: config.secure,
+                status: 'failed',
+                error: error.message,
+            });
+        }
     }
-  }
 
-  // Return summary of all tests
-  res.json({
-    success: true,
-    message: `Auto-discovery complete. Found ${successCount} working configuration(s).`,
-    totalTests: configurations.length,
-    successfulConfigs: successCount,
-    results: results,
-  });
+    // Return summary of all tests
+    res.json({
+        success: true,
+        message: `Auto-discovery complete. Found ${successCount} working configuration(s).`,
+        totalTests: configurations.length,
+        successfulConfigs: successCount,
+        results: results,
+    });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error("Unhandled Error:", err);
+    res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        error: err.message || "Unknown error occurred"
+    });
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
 });
