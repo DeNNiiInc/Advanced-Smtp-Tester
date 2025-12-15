@@ -27,22 +27,28 @@ app.post('/api/test-smtp', async (req, res) => {
         }) for ${user}`
     );
 
+    // Parse secure setting
+    const isSecure = secure === true || secure === "true";
+    const isNone = secure === "none";
+
     // Create Transporter
     const transporterConfig = {
         host: host,
         port: parseInt(port),
-        secure: secure === true || secure === "true", // true for 465, false for other ports
+        secure: isSecure, // true for 465, false for other ports
         auth: {
             user: user,
             pass: pass,
         },
+        tls: {
+            rejectUnauthorized: false, // Default to allowing self-signed
+        }
     };
 
-    // Only add TLS settings if secure is not explicitly "none"
-    if (secure !== "none") {
-        transporterConfig.tls = {
-            rejectUnauthorized: false, // Allow self-signed certs for testing flexibility
-        };
+    // Handle Unencrypted (Force Cleartext)
+    if (isNone) {
+        transporterConfig.ignoreTLS = true;
+        delete transporterConfig.tls; // Remove TLS config for cleartext
     }
 
     try {
