@@ -270,6 +270,13 @@ document.getElementById('smtpForm').addEventListener('submit', async function (e
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
+    // Trim all string values to prevent copy-paste whitespace issues
+    Object.keys(data).forEach(key => {
+        if (typeof data[key] === 'string') {
+            data[key] = data[key].trim();
+        }
+    });
+
     try {
         const response = await fetch('/api/test-smtp', {
             method: 'POST',
@@ -364,6 +371,13 @@ document.getElementById('autoTestBtn').addEventListener('click', async function 
     const form = document.getElementById('smtpForm');
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
+
+    // Trim all string values
+    Object.keys(data).forEach(key => {
+        if (typeof data[key] === 'string') {
+            data[key] = data[key].trim();
+        }
+    });
 
     // Only need host, user, pass, from, to for auto test
     const autoTestData = {
