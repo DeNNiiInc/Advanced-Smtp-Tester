@@ -1,18 +1,26 @@
 {
   "name": "advanced-smtp-tester",
   "version": "1.0.0",
-  "description": "Advanced Smtp Tester",
-  "main": "index.js",
+  "description": "Advanced Smtp Tester - Desktop Application",
+  "main": "electron-main.js",
   "scripts": {
     "start": "node server.js",
+    "electron": "electron .",
+    "build": "electron-builder build --win --publish never",
+    "build:dir": "electron-builder build --win --dir",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DeNNiiInc/Advanced-Smtp-Tester.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "smtp",
+    "email",
+    "tester",
+    "desktop"
+  ],
+  "author": "Beyond Cloud Technology",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
@@ -24,5 +32,52 @@
     "cors": "^2.8.5",
     "express": "^5.2.1",
     "nodemailer": "^7.0.11"
+  },
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.beyondcloud.smtptester",
+    "productName": "Advanced SMTP Tester",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist",
+      "!node_modules",
+      "!.git",
+      "!.gitignore",
+      "!README.md"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "public/Logo.png",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SMTP Tester"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.${ext}"
+    }
   }
 }
