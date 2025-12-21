@@ -1,6 +1,6 @@
 # Advanced SMTP Tester
 
-A powerful desktop application for testing SMTP configurations with support for multiple providers, dark mode, test history, and enhanced error messages.
+A powerful desktop application for testing SMTP configurations with support for multiple providers, dark mode, test history, and enhanced error messages..
 
 ## Features
 
