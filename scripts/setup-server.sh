@@ -27,6 +27,11 @@ curl -fsSL https://pkg.cloudflare.com/cloudflare-public-v2.gpg | tee /usr/share/
 echo 'deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.cloudflare.com/cloudflared any main' | tee /etc/apt/sources.list.d/cloudflared.list
 apt-get update && apt-get install -y cloudflared
 
+# 1.2 Install App Dependencies
+echo "📦 Installing Application Dependencies..."
+cd "$APP_DIR"
+npm install
+
 # 2. Setup Nginx
 echo "⚙️ Configuring Nginx..."
 cp "$APP_DIR/config/nginx.conf.template" "/etc/nginx/sites-available/$APP_NAME"
