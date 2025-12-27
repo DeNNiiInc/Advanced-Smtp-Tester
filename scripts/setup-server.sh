@@ -20,6 +20,13 @@ if ! command -v pm2 &> /dev/null; then
     npm install -g pm2
 fi
 
+# 1.1 Install Cloudflared (Optional but recommended)
+echo "☁️ Installing Cloudflared..."
+mkdir -p --mode=0755 /usr/share/keyrings
+curl -fsSL https://pkg.cloudflare.com/cloudflare-public-v2.gpg | tee /usr/share/keyrings/cloudflare-public-v2.gpg >/dev/null
+echo 'deb [signed-by=/usr/share/keyrings/cloudflare-public-v2.gpg] https://pkg.cloudflare.com/cloudflared any main' | tee /etc/apt/sources.list.d/cloudflared.list
+apt-get update && apt-get install -y cloudflared
+
 # 2. Setup Nginx
 echo "⚙️ Configuring Nginx..."
 cp "$APP_DIR/config/nginx.conf.template" "/etc/nginx/sites-available/$APP_NAME"
