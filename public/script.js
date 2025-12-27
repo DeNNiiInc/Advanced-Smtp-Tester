@@ -469,9 +469,6 @@ document.getElementById('autoTestBtn').addEventListener('click', async function 
     }
 });
 
-    }
-});
-
 // ===================================
 // VERSION INFO
 // ===================================
