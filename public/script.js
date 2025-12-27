@@ -34,6 +34,12 @@ const PRESETS = {
         port: '587',
         secure: 'false',
         name: 'Amazon SES'
+    },
+    mailassure: {
+        host: 'smtpout.mtaroutes.com',
+        port: '587',
+        secure: 'false',
+        name: 'Mail Assure'
     }
 };
 

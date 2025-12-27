@@ -134,6 +134,7 @@ Click **"Auto Discovery Test"** to automatically test all common port and encryp
 | **SendGrid** | smtp.sendgrid.net | 587 | STARTTLS |
 | **Mailgun** | smtp.mailgun.org | 587 | STARTTLS |
 | **Amazon SES** | email-smtp.us-east-1.amazonaws.com | 587 | STARTTLS |
+| **Mail Assure** | smtpout.mtaroutes.com | 587 | STARTTLS |
 
 ---
 
