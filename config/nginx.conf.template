@@ -1,0 +1,25 @@
+server {
+    listen 80;
+    server_name _;
+
+    root /var/www/Advanced-Smtp-Tester;
+    index index.html;
+
+    # Serve static frontend files
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Proxy API requests to Node.js app
+    location /api {
+        proxy_pass http://localhost:4001;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+    
+    # Increase body size for larger payloads if needed
+    client_max_body_size 10M;
+}

@@ -1,2 +1,5 @@
 node_modules
 .env
+deploy-secrets.json
+config/secrets.env
+scripts/auth.json
