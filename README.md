@@ -2,107 +2,148 @@
 
 ![Banner](docs/readme_banner.png)
 
-> **A premium, powerful SMTP testing utility for developers and sysadmins.**  
-> Test configurations, debug connection issues, and visualize results with a modern, beautiful interface.
+**A professional, feature-rich SMTP testing utility for developers and system administrators.**  
+
+Test SMTP configurations, troubleshoot connection issues, and validate email delivery with an elegant, intuitive interface.
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Available_Here-success?style=for-the-badge)](https://advanced-smtp-tester.beyondcloud.technology/)
-[![GitHub](https://img.shields.io/badge/GitHub-View_Code-blue?style=for-the-badge&logo=github)](https://github.com/DeNNiiInc/Advanced-Smtp-Tester)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Try_Now-success?style=for-the-badge)](https://advanced-smtp-tester.beyondcloud.technology/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/DeNNiiInc/Advanced-Smtp-Tester)
 [![License](https://img.shields.io/badge/License-ISC-yellow?style=for-the-badge)](LICENSE)
 
 </div>
 
 ---
 
-## ✨ Features
-
-### 🎨 Modern User Interface
-- **Premium Design** - Glassmorphism effects, smooth animations, and a polished UI.
-- **Dark/Light Mode** - Toggle between themes with automatic persistence.
-- **Responsive** - Works perfectly on desktop and mobile devices.
-
-![Main Interface](docs/feature_main_interface.png)
-
-### 🚀 Powerful Testing Tools
-- **Auto-Discovery** - Automatically test multiple port (25, 465, 587, 2525) and encryption (SSL/TLS, STARTTLS) combinations in one click.
-- **Quick Presets** - Pre-configured settings for **Office 365, Gmail, SendGrid, Mailgun, and Amazon SES**.
-- **Enhanced Error Handling** - Intelligent error analysis that provides actionable troubleshooting tips.
-
-### 📊 History & Insights
-- **Local Test History** - Automatically saves your recent tests (locally) for quick re-testing.
-- **Detailed Logs** - View full SMTP transaction logs and server responses.
-- **Git Version Badge** - Always know which version is deployed with the live Git commit badge.
-
-![Git Badge](docs/feature_git_badge.png)
-
----
-
 ## 🌐 Live Demo
 
-Try the application instantly on our production server:
-**[https://advanced-smtp-tester.beyondcloud.technology/](https://advanced-smtp-tester.beyondcloud.technology/)**
+**Try it now:** [https://advanced-smtp-tester.beyondcloud.technology/](https://advanced-smtp-tester.beyondcloud.technology/)
 
 ---
 
-## 🛠️ Installation & Usage
+## 📸 Screenshots
 
-### Option 1: Run Locally (Node.js)
+### Desktop View (1920x1080)
+![Desktop Interface](docs/screenshot_desktop.png)
 
-1.  **Clone the repository**
-    ```bash
-    git clone https://github.com/DeNNiiInc/Advanced-Smtp-Tester.git
-    cd Advanced-Smtp-Tester
-    ```
+### Mobile View
+![Mobile Interface](docs/screenshot_mobile.png)
 
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
+---
 
-3.  **Start the server**
-    ```bash
-    npm start
-    ```
-    Access the app at `http://localhost:3000`
+## ✨ Key Features
 
-### Option 2: Desktop App (Electron)
+### 🎨 **Premium User Experience**
+- **Dark/Light Mode** - Seamless theme switching with persistence
+- **Glassmorphism Design** - Modern, polished interface with smooth animations
+- **Fully Responsive** - Perfect experience on desktop, tablet, and mobile devices
+- **Git Version Badge** - Always know what version is deployed (bottom-right corner)
 
-You can run the application as a standalone desktop app.
+### ⚡ **Powerful Testing Capabilities**
+- **Quick Presets** - Pre-configured settings for popular providers:
+  - Microsoft Office 365
+  - Google Gmail
+  - SendGrid
+  - Mailgun
+  - Amazon SES
+- **Auto-Discovery** - Automatically test multiple port/encryption combinations:
+  - Ports: 25, 465, 587, 2525
+  - Encryption: SSL/TLS, STARTTLS, Unencrypted
+- **Enhanced Error Handling** - Intelligent error analysis with actionable troubleshooting tips
+
+### 📊 **History & Insights**
+- **Local Test History** - Automatically saves recent tests in browser storage
+- **Detailed Logs** - View complete SMTP transaction logs and server responses
+- **Click-to-Reload** - Quickly retest previous configurations
+
+### 🔒 **Security & Privacy**
+- **No Server Storage** - Credentials are processed in-memory only
+- **Browser-Only History** - Test history stored locally (IndexedDB)
+- **Clear Warning** - Password inclusion in test emails is clearly indicated
+
+---
+
+## 🚀 Installation Options
+
+### Option 1: Use the Live Demo ✨ **Recommended**
+
+No installation needed! Just visit:  
+**[https://advanced-smtp-tester.beyondcloud.technology/](https://advanced-smtp-tester.beyondcloud.technology/)**
+
+### Option 2: Run Locally (Node.js)
 
 ```bash
-# Run in development mode
+# Clone the repository
+git clone https://github.com/DeNNiiInc/Advanced-Smtp-Tester.git
+cd Advanced-Smtp-Tester
+
+# Install dependencies
+npm install
+
+# Start the server
+npm start
+
+# Access at http://localhost:3000
+```
+
+### Option 3: Desktop App (Electron)
+
+```bash
+# Development mode
 npm run electron
 
-# Build Windows Installer
+# Build Windows installer
 npm run build
 ```
 
-### Option 3: Proxmox Deployment (Automated)
+### Option 4: Automated Proxmox Deployment
 
-We provide a fully automated deployment script for **TurnKey Linux Node.js** containers on Proxmox.
+For automated deployment to **TurnKey Linux Node.js** containers:
 
-1.  **Setup Secrets**: Create `deploy-secrets.json` (see `PROXMOX_DEPLOY_TEMPLATE.md`).
-2.  **Run Deploy Script**:
-    ```powershell
-    ./deploy-to-proxmox.ps1
-    ```
-    This script handles:
-    -   Installing system dependencies (Git, Nginx, PM2, Cloudflared).
-    -   Configuring Nginx reverse proxy.
-    -   Setting up a cron job for **auto-updates every 5 minutes**.
+1. Create `deploy-secrets.json` (see `PROXMOX_DEPLOY_TEMPLATE.md`)
+2. Run: `./deploy-to-proxmox.ps1`
 
-👉 **[Read the Full Deployment Guide](PROXMOX_DEPLOY_TEMPLATE.md)**
+Features automatic:
+- Dependency installation (Git, Nginx, PM2, Cloudflared)
+- Nginx reverse proxy configuration
+- Auto-updates every 5 minutes via cron
+
+📖 **[Full Deployment Guide](PROXMOX_DEPLOY_TEMPLATE.md)**
 
 ---
 
-## 🔒 Security Note
+## 💡 Usage
 
-This application is designed for testing purposes.
--   **Passwords are processed in memory only** on the server side to attempt the SMTP connection.
--   **No credentials are stored** on the server.
--   **Test History** is stored **locally in your browser** (IndexedDB). clearing your browser cache will clear your history.
--   The "Unencrypted" option is provided for legacy server testing but should be used with caution.
+### Quick Start
+1. Visit [https://advanced-smtp-tester.beyondcloud.technology/](https://advanced-smtp-tester.beyondcloud.technology/)
+2. Select a preset (e.g., "Microsoft Office 365")
+3. Enter your credentials
+4. Enter recipient email address
+5. Click **"Test Configuration & Send Email"**
+
+### Auto-Discovery Mode
+Click **"Auto Discovery Test"** to automatically test all common port and encryption combinations. Successful configurations will send separate test emails.
+
+### Configuration Presets
+
+| Provider | Host | Port | Encryption |
+|----------|------|------|------------|
+| **Office 365** | smtp.office365.com | 587 | STARTTLS |
+| **Gmail** | smtp.gmail.com | 587 | STARTTLS |
+| **SendGrid** | smtp.sendgrid.net | 587 | STARTTLS |
+| **Mailgun** | smtp.mailgun.org | 587 | STARTTLS |
+| **Amazon SES** | email-smtp.us-east-1.amazonaws.com | 587 | STARTTLS |
+
+---
+
+## 🛠️ Technology Stack
+
+- **Backend**: Node.js, Express, Nodemailer
+- **Frontend**: Vanilla JavaScript, IndexedDB
+- **Desktop**: Electron
+- **Deployment**: PM2, Nginx, Git Auto-Sync
+- **Design**: Glassmorphism, CSS Variables, Responsive Grid
 
 ---
 
@@ -110,11 +151,11 @@ This application is designed for testing purposes.
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-1.  Fork the project
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
@@ -125,7 +166,9 @@ This project is licensed under the ISC License.
 ---
 
 <div align="center">
-  <p>Built with ❤️ by <strong>Beyond Cloud Technology</strong></p>
-  <a href="https://www.youtube.com/@beyondcloudtechnology">YouTube Channel</a> • 
-  <a href="https://beyondcloud.technology">Website</a>
+
+**Built with ❤️ by Beyond Cloud Technology**
+
+[YouTube](https://www.youtube.com/@beyondcloudtechnology) • [Website](https://beyondcloud.technology) • [GitHub](https://github.com/DeNNiiInc/Advanced-Smtp-Tester)
+
 </div>
