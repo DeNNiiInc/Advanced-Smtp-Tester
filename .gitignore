@@ -1,5 +1,9 @@
 node_modules
+dist
+.DS_Store
+*.log
 .env
 deploy-secrets.json
 config/secrets.env
 scripts/auth.json
+*.zip
