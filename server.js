@@ -3,9 +3,24 @@ const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const { execSync } = require("child_process");
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Get Git Commit Info
+let gitInfo = { 
+    hash: 'Unknown', 
+    date: 'Unknown' 
+};
+
+try {
+    const hash = execSync('git log -1 --format="%h"').toString().trim();
+    const date = execSync('git log -1 --format="%cd"').toString().trim();
+    gitInfo = { hash, date };
+} catch (e) {
+    console.warn("Could not retrieve git info:", e.message);
+}
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -16,6 +31,11 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 // Serve index.html from the root directory
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// API Endpoint for Version Info
+app.get('/api/version', (req, res) => {
+    res.json(gitInfo);
 });
 
 app.post('/api/test-smtp', async (req, res) => {

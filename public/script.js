@@ -469,6 +469,53 @@ document.getElementById('autoTestBtn').addEventListener('click', async function 
     }
 });
 
+    }
+});
+
+// ===================================
+// VERSION INFO
+// ===================================
+async function loadVersionInfo() {
+    try {
+        const response = await fetch('/api/version');
+        const data = await response.json();
+        
+        if (data.hash && data.hash !== 'Unknown') {
+            const badge = document.getElementById('versionBadge');
+            const hashSpan = badge.querySelector('.commit-hash');
+            const dateSpan = badge.querySelector('.commit-date');
+            
+            hashSpan.textContent = data.hash; // e.g., 9f3a914
+            dateSpan.textContent = timeAgo(new Date(data.date)); // e.g., 3d ago
+            
+            badge.classList.remove('hidden');
+        }
+    } catch (e) {
+        console.warn('Failed to load version info:', e);
+    }
+}
+
+function timeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + "y ago";
+    
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + "mo ago";
+    
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + "d ago";
+    
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + "h ago";
+    
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + "m ago";
+    
+    return Math.floor(seconds) + "s ago";
+}
+
 // ===================================
 // INITIALIZATION
 // ===================================
@@ -481,6 +528,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // Load history
     await loadHistory();
+
+    // Load Version Info
+    await loadVersionInfo();
 
     // Load last used configuration
     const settings = await window.smtpDB.getSettings();
