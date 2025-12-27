@@ -240,6 +240,19 @@ function displayErrorWithTips(errorMessage, container) {
 }
 
 // ===================================
+// AUTO-TRIM INPUT FIELDS
+// ===================================
+// Automatically trim whitespace from all text inputs on blur
+document.addEventListener('DOMContentLoaded', () => {
+    const textInputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+    textInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            this.value = this.value.trim();
+        });
+    });
+});
+
+// ===================================
 // PASSWORD TOGGLE
 // ===================================
 function togglePassword() {
