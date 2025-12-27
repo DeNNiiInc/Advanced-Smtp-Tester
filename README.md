@@ -1,124 +1,131 @@
-# Advanced SMTP Tester
+# 📧 Advanced SMTP Tester
 
-A powerful desktop application for testing SMTP configurations with support for multiple providers, dark mode, test history, and enhanced error messages..
+![Banner](docs/readme_banner.png)
 
-## Features
+> **A premium, powerful SMTP testing utility for developers and sysadmins.**  
+> Test configurations, debug connection issues, and visualize results with a modern, beautiful interface.
 
-### 🎨 User Interface
-- **Dark/Light Mode** - Toggle between themes with persistence
-- **Configuration Presets** - Quick-load for Office 365, Gmail, SendGrid, Mailgun, Amazon SES
-- **Test History** - Last 50 tests with click-to-load
-- **Enhanced Errors** - Helpful troubleshooting tips for common issues
+<div align="center">
 
-### 🖥️ Desktop Application
-- **Native Windows App** - Runs in its own window (no browser needed)
-- **System Tray** - Minimize to tray, quick access
-- **Menu Bar** - Full application menu
-- **Auto-Start Server** - Express server starts automatically
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Available_Here-success?style=for-the-badge)](https://advanced-smtp-tester.beyondcloud.technology/)
+[![GitHub](https://img.shields.io/badge/GitHub-View_Code-blue?style=for-the-badge&logo=github)](https://github.com/DeNNiiInc/Advanced-Smtp-Tester)
+[![License](https://img.shields.io/badge/License-ISC-yellow?style=for-the-badge)](LICENSE)
 
-### 📧 SMTP Testing
-- **Multiple Encryption** - STARTTLS, SSL/TLS, Unencrypted
-- **Auto-Discovery** - Test multiple port/encryption combinations
-- **Beautiful Emails** - Professional HTML test emails
-- **Detailed Results** - Full response logs and error messages
+</div>
 
-## Installation
+---
 
-### Desktop App (Windows)
-1. Download the latest release from [Releases](https://github.com/DeNNiiInc/Advanced-Smtp-Tester/releases)
-2. Extract the ZIP file
-3. Run `Advanced-SMTP-Tester.exe`
+## ✨ Features
 
-### Web Version
+### 🎨 Modern User Interface
+- **Premium Design** - Glassmorphism effects, smooth animations, and a polished UI.
+- **Dark/Light Mode** - Toggle between themes with automatic persistence.
+- **Responsive** - Works perfectly on desktop and mobile devices.
+
+![Main Interface](docs/feature_main_interface.png)
+
+### 🚀 Powerful Testing Tools
+- **Auto-Discovery** - Automatically test multiple port (25, 465, 587, 2525) and encryption (SSL/TLS, STARTTLS) combinations in one click.
+- **Quick Presets** - Pre-configured settings for **Office 365, Gmail, SendGrid, Mailgun, and Amazon SES**.
+- **Enhanced Error Handling** - Intelligent error analysis that provides actionable troubleshooting tips.
+
+### 📊 History & Insights
+- **Local Test History** - Automatically saves your recent tests (locally) for quick re-testing.
+- **Detailed Logs** - View full SMTP transaction logs and server responses.
+- **Git Version Badge** - Always know which version is deployed with the live Git commit badge.
+
+![Git Badge](docs/feature_git_badge.png)
+
+---
+
+## 🌐 Live Demo
+
+Try the application instantly on our production server:
+**[https://advanced-smtp-tester.beyondcloud.technology/](https://advanced-smtp-tester.beyondcloud.technology/)**
+
+---
+
+## 🛠️ Installation & Usage
+
+### Option 1: Run Locally (Node.js)
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/DeNNiiInc/Advanced-Smtp-Tester.git
+    cd Advanced-Smtp-Tester
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Start the server**
+    ```bash
+    npm start
+    ```
+    Access the app at `http://localhost:3000`
+
+### Option 2: Desktop App (Electron)
+
+You can run the application as a standalone desktop app.
+
 ```bash
-npm install
-npm start
-```
-Open `http://localhost:3000` in your browser.
-
-### Electron Development
-```bash
-npm install
+# Run in development mode
 npm run electron
-```
 
-## Building from Source
-
-### Web Version
-```bash
-npm install
-npm start
-```
-
-### Desktop App
-```bash
-npm install
+# Build Windows Installer
 npm run build
 ```
 
-Or use electron-packager:
-```bash
-npx electron-packager . "Advanced-SMTP-Tester" --platform=win32 --arch=x64 --out=dist --overwrite
-```
+### Option 3: Proxmox Deployment (Automated)
 
-## Usage
+We provide a fully automated deployment script for **TurnKey Linux Node.js** containers on Proxmox.
 
-### Quick Start
-1. Select a preset (e.g., "Microsoft Office 365")
-2. Enter your credentials
-3. Enter recipient email
-4. Click "Test Configuration & Send Email"
+1.  **Setup Secrets**: Create `deploy-secrets.json` (see `PROXMOX_DEPLOY_TEMPLATE.md`).
+2.  **Run Deploy Script**:
+    ```powershell
+    ./deploy-to-proxmox.ps1
+    ```
+    This script handles:
+    -   Installing system dependencies (Git, Nginx, PM2, Cloudflared).
+    -   Configuring Nginx reverse proxy.
+    -   Setting up a cron job for **auto-updates every 5 minutes**.
 
-### Configuration Presets
-- **Office 365**: `smtp.office365.com:587` (STARTTLS)
-- **Gmail**: `smtp.gmail.com:587` (STARTTLS)
-- **SendGrid**: `smtp.sendgrid.net:587` (STARTTLS)
-- **Mailgun**: `smtp.mailgun.org:587` (STARTTLS)
-- **Amazon SES**: `email-smtp.us-east-1.amazonaws.com:587` (STARTTLS)
+👉 **[Read the Full Deployment Guide](PROXMOX_DEPLOY_TEMPLATE.md)**
 
-### Auto-Discovery
-Click "Auto Discovery Test" to automatically test multiple port/encryption combinations.
+---
 
-## Development
+## 🔒 Security Note
 
-### Project Structure
-```
-Advanced-Smtp-Tester/
-├── electron-main.js      # Electron entry point
-├── server.js             # Express server
-├── index.html            # Main UI
-├── public/
-│   ├── db.js            # IndexedDB wrapper
-│   ├── script.js        # Frontend logic
-│   ├── styles.css       # Styling
-│   └── Logo.png         # App icon
-└── .github/
-    └── workflows/
-        └── build-desktop.yml  # Automated builds
-```
+This application is designed for testing purposes.
+-   **Passwords are processed in memory only** on the server side to attempt the SMTP connection.
+-   **No credentials are stored** on the server.
+-   **Test History** is stored **locally in your browser** (IndexedDB). clearing your browser cache will clear your history.
+-   The "Unencrypted" option is provided for legacy server testing but should be used with caution.
 
-### Scripts
-- `npm start` - Start web server
-- `npm run electron` - Run desktop app
-- `npm run build` - Build Windows installer
-- `npm run build:dir` - Build unpacked directory
+---
 
-## Technologies
+## 🤝 Contributing
 
-- **Backend**: Node.js, Express, Nodemailer
-- **Frontend**: Vanilla JavaScript, IndexedDB
-- **Desktop**: Electron
-- **Build**: electron-builder, electron-packager
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+1.  Fork the project
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-ISC
+---
 
-## Author
+## 📄 License
 
-Beyond Cloud Technology
+This project is licensed under the ISC License.
 
-## Links
+---
 
-- [GitHub Repository](https://github.com/DeNNiiInc/Advanced-Smtp-Tester)
-- [YouTube Channel](https://www.youtube.com/@beyondcloudtechnology)
+<div align="center">
+  <p>Built with ❤️ by <strong>Beyond Cloud Technology</strong></p>
+  <a href="https://www.youtube.com/@beyondcloudtechnology">YouTube Channel</a> • 
+  <a href="https://beyondcloud.technology">Website</a>
+</div>
